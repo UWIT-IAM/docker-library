@@ -24,12 +24,10 @@ good idea to set up your own scheduled actions to keep stagnant dependents up to
 ## Index of Images
 
 - [poetry](images/poetry.dockerfile) 
-  - [View on dockerhub](https://hub.docker.com/repository/docker/uwitiam/poetry)
   - *Description*: A python3.8 image that has poetry installed, allowing you to simply 
     add your project files into the docker image, and use poetry to install and 
     build your package inside the container.
 - [uw-saml-poetry](images/uw-saml-poetry.dockerfile)
-  - [View on dockerhub](https://hub.docker.com/repository/docker/uwitiam/uw-saml-poetry)
   - Installs [uw-saml-python] and its dependencies, which is a heavy lift on its own.
     This descends from uwitiam/poetry above. 
    
