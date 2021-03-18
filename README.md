@@ -1,4 +1,4 @@
-# UW-IT IAM Public Docker Library
+# UW-IT IAM Docker Library
 
 This repository contains the dockerfiles of some shared images that are available 
 on [gcr.io] for the UW-IT IAM team.
