@@ -41,3 +41,4 @@ be reused, feel free. Some things to keep in mind:
 
 
 [gcr.io]: https://gcr.io/uwit-mci-iam
+[uw-saml-python]: https://github.com/uwit-iam/uw-saml-python
