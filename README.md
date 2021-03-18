@@ -37,9 +37,7 @@ good idea to set up your own scheduled actions to keep stagnant dependents up to
 Contributions to our ecosystem are welcome! If you would like to add images here to 
 be reused, feel free. Some things to keep in mind:
 
-- The images should not require any special credentials or permissions
-- The images should not have any internal restrictions on who _should_ be using it; 
-  these will be available publicly.
+- The images should not require any special credentials or permissions, save for access to [gcr.io]. Anyone on our team should be able to use them.
 
-[uw-saml-python]: https://github.com/uwit-iam/uw-saml-python
-[gcr.io]: https://gcr.io
+
+[gcr.io]: https://gcr.io/uwit-mci-iam
