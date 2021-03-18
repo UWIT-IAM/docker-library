@@ -1,0 +1,33 @@
+name: Update images
+on:
+  push:
+  schedule:
+    - cron: '0 2 * * 1'  # Run at 2am every Monday.
+
+env:
+  GCR_PROJECT: uwit-mci-iam
+  EDGE_TAG: latest
+  GCR_HOST: gcr.io
+  DRY_RUN: ${{  github.event != 'schedule' }}
+
+jobs:
+  update-images:
+    runs-on: ubuntu-latest
+    name: Update image library
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Set VERSION"
+        run: echo "VERSION=$(date +%Y.%-j.%-I.%-M)" >> $GITHUB_ENV
+      - name: Docker login with GCP credentials
+        id: gcp-login
+        shell: bash
+        env:
+          GCR_TOKEN: ${{ secrets.GCR_TOKEN }}
+        run: |
+          echo "${GCR_TOKEN}" |
+          base64 -d |
+          docker login --username=_json_key --password-stdin https://${GCR_HOST}
+      - name: update-image
+        run: ./.github/update-image.sh -r poetry
+      - name: Update uw-saml-poetry image
+        run: ./.github/update-image.sh -r uw-saml-poetry

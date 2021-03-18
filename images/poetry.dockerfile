@@ -1,15 +1,24 @@
 # This is the base image for our python+poetry environment and is publicly
 # available at uwitiam/poetry:latest.
-# The base template for this was stolen from https://github.com/python-poetry/poetry/issues/1879
+# The base template for this taken from
+# https://github.com/python-poetry/poetry/issues/1879
+#
+# When using this, you may find it helpful to use the following environment
+# variables in dependent builds:
+#
+# PYSETUP_PATH -- All python requirements will be installed there.
+# VENV_PATH -- The virtual environment that poetry will use.
+# POETRY_HOME -- Where poetry will be installed.
+#
+# All three will be added to the environment's PATH.
 
-# `python-base` sets up all our shared environment variables
-FROM python:3.8-slim as python-base
+FROM python:3.8-slim as poetry-base
 ENV PYTHONUNBUFFERED=1 \
     # prevents python creating .pyc files
     PYTHONDONTWRITEBYTECODE=1 \
     \
     # pip
-    PIP_NO_CACHE_DIR=off \
+    PIP_NO_CACHE_DIR=yes \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
     \
@@ -22,24 +31,12 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=true \
     # do not ask any interactive question
     POETRY_NO_INTERACTION=1 \
-    \
-    # paths
     # this is where our requirements + virtual environment will live
     PYSETUP_PATH="/opt/pysetup" \
-    VENV_PATH="/opt/pysetup/.venv"
+    VENV_PATH="/opt/pysetup/.venv"  \
+    # prepend poetry and venv to path
+    PATH="${POETRY_HOME}/bin:${VENV_PATH}/bin:${PATH}"
 
-# prepend poetry and venv to path
-ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
-
-
-# The poetry base installs poetry.
-FROM python-base as poetry-base
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        # deps for installing poetry
-        curl \
-        # deps for building python deps
-        build-essential
-
-# install poetry - respects $POETRY_VERSION & $POETRY_HOME
-RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+WORKDIR $POETRY_HOME
+COPY ./images/poetry/* $POETRY_HOME/
+RUN ${POETRY_HOME}/bootstrap-poetry-env.sh
