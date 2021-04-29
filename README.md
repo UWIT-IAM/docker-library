@@ -1,7 +1,7 @@
 # UW-IT IAM Docker Library
 
 This repository contains the dockerfiles of some shared images that are available 
-on [gcr.io] for the UW-IT IAM team.
+on [ghcr.io] for anyone to consume.
 
 Github will run scheduled actions to rebuild these images and keep them up to date. 
 These scheduled builds are always tagged with their build as a pseudo-semver as:
@@ -29,7 +29,7 @@ good idea to set up your own scheduled actions to keep stagnant dependents up to
     build your package inside the container.
 - [uw-saml-poetry](images/uw-saml-poetry.dockerfile)
   - Installs [uw-saml-python] and its dependencies, which is a heavy lift on its own.
-    This descends from uwitiam/poetry above. 
+    This descends from poetry above. 
    
 
 # Contributing
@@ -37,8 +37,9 @@ good idea to set up your own scheduled actions to keep stagnant dependents up to
 Contributions to our ecosystem are welcome! If you would like to add images here to 
 be reused, feel free. Some things to keep in mind:
 
-- The images should not require any special credentials or permissions, save for access to [gcr.io]. Anyone on our team should be able to use them.
+- The images should not require any special credentials to pull; public means public.
+  **Do not build any secret values into the images!**
 
 
-[gcr.io]: https://gcr.io/uwit-mci-iam
+[ghcr.io]: https://github.com/orgs/UWIT-IAM/packages
 [uw-saml-python]: https://github.com/uwit-iam/uw-saml-python

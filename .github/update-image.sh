@@ -3,8 +3,8 @@
 set -e  # Exit on any error
 BUILD_OPTIONS=
 EDGE_TAG=${EDGE_TAG:-'latest'}
-GCR_PROJECT=${GCR_PROJECT:-uwit-mci-iam}
-GCR_HOST=${GCR_HOST:-gcr.io}
+DOCKER_HOST=${DOCKER_HOST:-ghcr.io}
+REPO_OWNER=uwit-iam
 
 while (( $# ))
 do
@@ -25,10 +25,6 @@ do
       ;;
     --no-pull) # Skip pulling the image; good for bootstrapping.
       NO_PULL=1
-      ;;
-    --gcr-key-file|-key)
-      shift
-      GOOGLE_APPLICATION_CREDENTIALS=$1
       ;;
     --target|-t)  # Optional; provide a target inside a dockerfile
       shift
@@ -88,8 +84,8 @@ function push-image() {
 }
 
 
-CANONICAL_IMAGE=${GCR_HOST}/${GCR_PROJECT}/${REPO}:${VERSION}
-EDGE_IMAGE=${GCR_HOST}/${GCR_PROJECT}/${REPO}:${EDGE_TAG}
+CANONICAL_IMAGE=${DOCKER_HOST}/${REPO_OWNER}/${REPO}:${VERSION}
+EDGE_IMAGE=${DOCKER_HOST}/${REPO_OWNER}/${REPO}:${EDGE_TAG}
 
 if [[ -z ${NO_PULL} ]]
 then
