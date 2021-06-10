@@ -13,6 +13,8 @@
 # All three will be added to the environment's PATH.
 
 FROM python:3.8-slim as poetry-base
+ARG POETRY_HOME=/opt/poetry
+ARG VENV_PATH=/opt/pysetup/.venv
 ENV PYTHONUNBUFFERED=1 \
     # prevents python creating .pyc files
     PYTHONDONTWRITEBYTECODE=1 \
@@ -25,15 +27,15 @@ ENV PYTHONUNBUFFERED=1 \
     # poetry
     # https://python-poetry.org/docs/configuration/#using-environment-variables
     # make poetry install to this location
-    POETRY_HOME="/opt/poetry" \
+    POETRY_HOME="$POETRY_HOME" \
     # Don't create a virtualenv on a docker container; that's just not necessary.
     POETRY_VIRTUALENVS_CREATE="false" \
     POETRY_NO_INTERACTION=1 \
     # this is where our requirements + virtual environment will live
     PYSETUP_PATH="/opt/pysetup" \
-    VENV_PATH="/opt/pysetup/.venv"  \
+    VENV_PATH="$VENV_PATH"  \
     # prepend poetry and venv to path
-    PATH="${POETRY_HOME}/bin:${VENV_PATH}/bin:${PATH}"
+    PATH="$POETRY_HOME/bin:$VENV_PATH/bin:${PATH}"
 
 WORKDIR $POETRY_HOME
 COPY ./images/poetry/* $POETRY_HOME/
