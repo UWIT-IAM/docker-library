@@ -6,7 +6,9 @@ on:
 
 env:
   EDGE_TAG: latest
-  DRY_RUN: ${{  github.event != 'schedule' }}
+  # We dry run on every code push except those to main.
+  # In all other events, we publish the new version.
+  DRY_RUN: ${{  github.event_name == 'push' && github.ref != 'refs/heads/main' }}
 
 jobs:
   update-images:
