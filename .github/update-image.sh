@@ -75,7 +75,7 @@ test -n "${FAIL}" && exit $FAIL
 
 function push-image() {
   IMAGE=$1
-  if [[ -n "${DRY_RUN}" && "${DRY_RUN}" != "0" ]]
+  if [[ -n "${DRY_RUN}" && "${DRY_RUN}" != "false" ]]
   then
     echo "[DRY RUN] Not pushing $IMAGE"
   else
