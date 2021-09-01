@@ -1,0 +1,94 @@
+name: Release docker library image with new version
+
+inputs:
+  image:
+    required: true
+    description: The image name you want to release (e.g., 'poetry')
+
+  dry-run:
+    required: true
+    default: false
+    description: Set this to true if you want to test the workflow without releasing
+
+  github-token:
+    required: true
+    description: Your github token, probably from secrets.GITHUB_TOKEN.
+
+  slack-token:
+    required: true
+    description: Your slack token, probably from secrets.ACTIONS_SLACK_BOT_TOKEN
+
+  gcloud-token:
+    required: true
+    description: Your gcloud token, probably from secrets.GCR_TOKEN
+
+runs:
+  using: composite
+  steps:
+    - uses: google-github-actions/setup-gcloud@v0.2.1
+      with:
+        service_account_key: ${{ inputs.gcloud-token }}
+        export_default_credentials: true
+
+    - run: echo "LIBRARY_IMAGE=${{ inputs.image }}" >> $GITHUB_ENV
+      name: Set up environment
+      shell: bash
+
+    - uses: uwit-iam/common-build-scripts/install-action@0.1.4
+
+    - uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ inputs.github-token }}
+
+    - run: ${{ github.action_path }}/release.sh
+      shell: bash
+      env:
+        dry_run: ${{ inputs.dry-run }}
+      id: release
+
+    - uses: uwit-iam/actions/set-up-slack-notification-canvas@0.1.5
+      env:
+        SLACK_BOT_TOKEN: ${{ inputs.slack-token }}
+        description: >
+          ${{ steps.release.outputs.release-qualifier }}
+          Build and release version ${{ steps.release.outputs.version }} of
+          uwit-iam/${{ env.LIBRARY_IMAGE }} docker library image
+      with:
+        gcloud-token: ${{ inputs.gcloud-token }}
+        json: >
+          {
+            "description": "${{ env.description }}",
+            "status": "succeeded",
+            "channel": "#iam-bots"
+          }
+
+    - id: create-artifact-markup
+      env:
+        actor_url: https://github.com/${{ github.actor }}
+        execution_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        tag: ${{ steps.release.outputs.tag }}
+        version: ${{ steps.release.outputs.version }}
+      shell: bash
+      run: |
+        source ./.build-scripts/sources/slack.sh
+        source ./.build-scripts/sources/github-actions.sh
+        desc="$(slack_link ${{ env.actor_url }} ${{ github.actor }}) "
+        desc+="released uwit-iam/${LIBRARY_IMAGE} version "
+        desc+="$(slack_link ${{ env.tag }} ${{ env.version }}) "
+        desc+="on a $(slack_link ${{ env.execution_url }} '${{ github.event_name }} event') "
+        set_ci_output markup "$desc"
+
+    - uses: uwit-iam/actions/update-slack-workflow-canvas@0.1.5
+      env:
+        SLACK_BOT_TOKEN: ${{ inputs.slack-token }}
+      with:
+        command: add-artifact
+        description: ${{ steps.create-artifact-markup.outputs.markup }}
+
+    - uses: uwit-iam/actions/finalize-slack-notification-canvas@0.1.5
+      env:
+        SLACK_BOT_TOKEN: ${{ inputs.slack-token }}
+      with:
+        workflow-status: ${{ job.status == 'success' && 'succeeded' || 'failed' }}

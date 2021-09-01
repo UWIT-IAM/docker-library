@@ -1,6 +1,5 @@
 name: Update images
 on:
-  push:
   schedule:
     - cron: '0 2 * * 1'  # Run at 2am every Monday.
 
@@ -23,7 +22,5 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: update-image
-        run: ./.github/update-image.sh -r poetry
       - name: Update uw-saml-poetry image
         run: ./.github/update-image.sh -r uw-saml-poetry
