@@ -5,12 +5,13 @@ on [ghcr.io] for anyone to consume.
 
 Github will run scheduled actions to rebuild these images and keep them up to date. 
 These scheduled builds are always tagged with their build as a pseudo-semver as:
-  `YYYY.JJJ.HH.MM`, where:
+  `YYYY.M.D.h.m`, where:
   
-  - YYYY: Year
-  - JJJ: Day of year (non 0-padded)
-  - HH: Hour of build (non 0-padded)
-  - MM: Minute of build (non 0-padded)
+  - YYYY: Year (always 4 digits)
+  - M: Month of year (non 0-padded)
+  - D: Day of month (non 0-padded)
+  - h: Hour of build (non 0-padded)
+  - m: Minute of build (non 0-padded)
 
 
 If you are a dependent of one of these images, and 
@@ -29,7 +30,8 @@ good idea to set up your own scheduled actions to keep stagnant dependents up to
     build your package inside the container.
 - [uw-saml-poetry](images/uw-saml-poetry.dockerfile)
   - Installs [uw-saml-python] and its dependencies, which is a heavy lift on its own.
-    This descends from poetry above. 
+    This descends from poetry above. Use this image if you need to use the 
+    uw-saml-python library in your application.
    
 
 # Contributing
