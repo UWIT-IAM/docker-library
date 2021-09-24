@@ -18,7 +18,7 @@ docker build \
   -f images/${LIBRARY_IMAGE}.dockerfile \
   -t ${version_tag} \
   ./images/${LIBRARY_IMAGE}
-docker version_tag ${version_tag} ${latest_tag}
+docker tag ${version_tag} ${latest_tag}
 
 if [[ "${dry_run}" == 'false' ]]
 then
