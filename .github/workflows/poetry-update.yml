@@ -5,7 +5,7 @@ on:
     branches:
       - run-poetry-update-workflow
   schedule:
-    cron: '0 0 * * MON'
+    - cron: '0 0 * * MON'
   workflow_dispatch:
 
 jobs:
