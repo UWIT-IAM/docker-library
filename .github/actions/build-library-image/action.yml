@@ -1,0 +1,25 @@
+inputs:
+  build_id:
+    description: Something unique; this will be used to tag your image.
+    required: true
+  image_name:
+    description: The short name of your image (i.e., directory under ./images).
+    required: true
+  from_base_tag:
+    description: (Optional) A base tag instead of "latest" to build against.
+    default: latest
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        set -ex
+        docker pull ghcr.io/uwit-iam/${{ env.dest_image_name }} || echo ""
+        docker build images/${{ env.image_name }} \
+          --build-arg from_base_tag \
+          -t ghcr.io/uwit-iam/${{ env.dest_image_name }}
+        docker push ghcr.io/uwit-iam/${{ env.dest_image_name }}
+      env:
+        dest_image_name: ${{ inputs.image_name }}:${{ inputs.build_id }}
+        image_name: ${{ inputs.image_name }}
+        from_base_tag: ${{ inputs.from_base_tag }}
