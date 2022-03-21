@@ -45,7 +45,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3.14.0
         with:
-          add-paths: poetry.lock
+          add-paths: images/uw-saml-poetry/poetry.lock
           commit-message: ${{ env.message }}
           delete-branch: true
           title: ${{ env.message }}
