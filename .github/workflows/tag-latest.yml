@@ -45,7 +45,10 @@ jobs:
           elif echo "${{ env.message }}" | grep '(build-id:'
           then
             build_id="${message#*build-id:}"
-            build_id=$(echo "${build_id}" | cut -f1 -d')' | sed 's| ||g')
+            build_id=$(echo "${build_id}" | head -n 1 | cut -f1 -d')' | sed 's| ||g')
+          else
+            echo "::error::No build ID could be discerned; expected to find this in: '${message}'"
+            exit 1
           fi
 
           echo ::set-output name=build-id::${build_id}
