@@ -150,7 +150,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "uw-saml"
-version = "1.1.0"
+version = "1.1.1"
 description = "A UW-specific adapter to the python3-saml package."
 category = "main"
 optional = false
@@ -158,12 +158,12 @@ python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
 cachelib = ">=0.4.1,<0.5.0"
-onelogin = ">=2.0.2,<3.0.0"
-python3-saml = {version = ">=1.12.0,<2.0.0", optional = true, markers = "extra == \"python3-saml\""}
+onelogin = ">=2.0.3,<3.0.0"
+python3-saml = {version = ">=1.14.0,<2.0.0", optional = true, markers = "extra == \"python3-saml\""}
 Werkzeug = ">=2.0.2,<3.0.0"
 
 [package.extras]
-python3-saml = ["python3-saml (>=1.12.0,<2.0.0)"]
+python3-saml = ["python3-saml (>=1.14.0,<2.0.0)"]
 
 [[package]]
 name = "werkzeug"
@@ -306,8 +306,8 @@ urllib3 = [
     {file = "urllib3-1.26.9.tar.gz", hash = "sha256:aabaf16477806a5e1dd19aa41f8c2b7950dd3c746362d7e3223dbe6de6ac448e"},
 ]
 uw-saml = [
-    {file = "uw-saml-1.1.0.tar.gz", hash = "sha256:1dfb4f0caf6faaba20b777e2c7ac52cef6167f9c894e5d341050f012195067dd"},
-    {file = "uw_saml-1.1.0-py3-none-any.whl", hash = "sha256:aca31aef45dcb3fe7c750f725d1f4325486dd384de941b541e6a1d949473e620"},
+    {file = "uw-saml-1.1.1.tar.gz", hash = "sha256:842fac070728635620018c41a9510ca199a3c4c905a17c7082043da17944dc33"},
+    {file = "uw_saml-1.1.1-py3-none-any.whl", hash = "sha256:5fb229a1c266cbc81a0f6deef3fb748b1efbe2905f3b8707b717188a79bcf02b"},
 ]
 werkzeug = [
     {file = "Werkzeug-2.0.3-py3-none-any.whl", hash = "sha256:1421ebfc7648a39a5c58c601b154165d05cf47a3cd0ccb70857cbdacf6c8f2b8"},
