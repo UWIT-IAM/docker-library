@@ -56,8 +56,8 @@ jobs:
           commit-message: ${{ env.message }}
           delete-branch: true
           title: ${{ env.message }}
-          assignees: tomthorogood
-          reviewers: tomthorogood
+          assignees: jdiverp
+          reviewers: jdiverp
         env:
           message: >
             [github actions] poetry update
