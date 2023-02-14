@@ -42,4 +42,4 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR $POETRY_HOME
 COPY ./* $POETRY_HOME/
-RUN ${POETRY_HOME}/bootstrap-poetry-env.sh
+RUN pip install poetry
