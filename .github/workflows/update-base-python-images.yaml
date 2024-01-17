@@ -1,0 +1,42 @@
+name: "Update base Python container images"
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * MON'
+  workflow_dispatch:
+
+jobs:
+  task:
+    strategy:
+      matrix:
+        py_version: [3.8, 3.9, 3.10, 3.11, 3.12]
+
+    permissions:
+      contents: write
+      pull-requests: write
+      packages: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auth to Cloud
+        uses: 'uwit-iam/action-auth-artifact-registry@main'
+        with:
+          credentials: "${{ secrets.MCI_GCLOUD_AUTH_JSON }}"
+
+      - uses: actions/checkout@v4
+
+      - name: Record timestamp for image
+        run: |
+          echo "timestamp=$(date +%Y.%m.%d.%H.%M.%S)" >> $GITHUB_OUTPUT  # e.g., 2024.01.17.15.09.31
+
+      - name: Build and push docker image
+        env:
+          image_uri: "us-docker.pkg.dev/uwit-mci-iam/containers/base-python-${{ matrix.py_version }}"
+        run: |
+          docker build \
+            images/python-base/ \
+            -f images/python-base/Dockerfile \
+            -t "${{ env.image_uri }}:latest" \
+            -t "${{ env.image_uri }}:${{ timestamp }}" \
+            --build-arg PYTHON_VERSION="${{ py_version }}"
