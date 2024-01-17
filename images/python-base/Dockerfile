@@ -1,10 +1,13 @@
 # e.g., "3.10"
 ARG PYTHON_VERSION
+# e.g., 2024.01.17.15.09.31
+ARG TIMESTAMP
+
 FROM python:${PYTHON_VERSION}-slim as python-base-BASE
 
     # Python
 ENV PYTHONUNBUFFERED=1 \
-#    # prevents python creating .pyc files
+    # prevents python creating .pyc files
     PYTHONDONTWRITEBYTECODE=1 \
     # pip
     PIP_NO_CACHE_DIR=yes \
@@ -29,3 +32,6 @@ RUN pip install --upgrade pipx && \
 #       This is true at install time but at runtime a new shell will be started that
 #       has that fixed per `pipx ensurepath` above
 RUN pipx install poetry
+
+# Leave a note behind so we can always quickly determine our original image
+RUN echo "${TIMESTAMP}" > /docker-tag

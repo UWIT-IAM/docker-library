@@ -45,5 +45,6 @@ jobs:
             -f images/python-base/Dockerfile \
             -t "${{ env.image_uri }}:latest" \
             -t "${{ env.image_uri }}:${{ steps.timestamp.outputs.value }}" \
+            --build-arg TIMESTAMP="${{ steps.timestamp.outputs.value }}" \
             --build-arg PYTHON_VERSION="${{ matrix.py_version }}"
           docker push --all-tags "${{ env.image_uri }}"
