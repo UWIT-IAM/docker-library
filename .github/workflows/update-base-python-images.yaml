@@ -27,8 +27,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Record timestamp for image
+        id: timestamp
         run: |
-          echo "timestamp=$(date +%Y.%m.%d.%H.%M.%S)" >> $GITHUB_OUTPUT  # e.g., 2024.01.17.15.09.31
+          echo "value=$(date +%Y.%m.%d.%H.%M.%S)" >> $GITHUB_OUTPUT  # e.g., 2024.01.17.15.09.31
 
       - name: Build and push docker image
         env:
@@ -38,5 +39,5 @@ jobs:
             images/python-base/ \
             -f images/python-base/Dockerfile \
             -t "${{ env.image_uri }}:latest" \
-            -t "${{ env.image_uri }}:${{ timestamp }}" \
+            -t "${{ env.image_uri }}:${{ steps.timestamp.value }}" \
             --build-arg PYTHON_VERSION="${{ py_version }}"
