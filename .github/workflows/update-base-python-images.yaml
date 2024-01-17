@@ -40,4 +40,4 @@ jobs:
             -f images/python-base/Dockerfile \
             -t "${{ env.image_uri }}:latest" \
             -t "${{ env.image_uri }}:${{ steps.timestamp.value }}" \
-            --build-arg PYTHON_VERSION="${{ py_version }}"
+            --build-arg PYTHON_VERSION="${{ matrix.py_version }}"
