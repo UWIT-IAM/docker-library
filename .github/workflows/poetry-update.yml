@@ -37,23 +37,27 @@ jobs:
           poetry update --lock
         id: poetry-update
       - run: |
-          docker build -f images/poetry/Dockerfile -t ${{ env.dest_image }} images/poetry
+          docker build -f images/poetry/Dockerfile -t ${{ env.dest_image }} -t ${{ env.latest_image }} images/poetry
           docker push ${{ env.dest_image }}
+          docker push ${{ env.latest_image }}
           echo ::notice::Pushed ${{ env.dest_image }}
         env:
           dest_image: ghcr.io/uwit-iam/poetry:${{ steps.configure.outputs.build-id }}
+          latest_image: ghcr.io/uwit-iam/poetry:latest
         name: Re-build poetry base image
       - run: |
           set -x
           docker build -f images/uw-saml-poetry/Dockerfile \
             --build-arg from_base_tag=${{ env.build_id }} \
-            -t ${{ env.dest_image }} images/uw-saml-poetry
+            -t ${{ env.dest_image }} -t ${{ env.latest_image }} images/uw-saml-poetry
           docker push ${{ env.dest_image }}
+          docker push ${{ env.latest_image }}
           echo ::notice::Pushed ${{ env.dest_image }}
         name: Re-build uw-saml-poetry image
         env:
           build_id: ${{ steps.configure.outputs.build-id }}
           dest_image: ghcr.io/uwit-iam/uw-saml-poetry:${{ steps.configure.outputs.build-id }}
+          latest_image: ghcr.io/uwit-iam/uw-saml-poetry:latest
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:

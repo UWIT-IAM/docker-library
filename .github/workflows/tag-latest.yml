@@ -14,8 +14,7 @@ on:
       build-id:
         description: The build-id (or any tag) that you want to tag as 'latest'
         required: true
-  schedule:
-    - cron: '0 0 * * MON'
+
 jobs:
   configure:
     outputs:
