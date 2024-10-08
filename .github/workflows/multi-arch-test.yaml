@@ -23,6 +23,7 @@ jobs:
         uses: 'uwit-iam/action-auth-artifact-registry@main'
         with:
           credentials: "${{ secrets.MCI_GCLOUD_AUTH_JSON }}"
+          enable_private_docker: true
 
       - name: Record timestamp for image
         id: timestamp
