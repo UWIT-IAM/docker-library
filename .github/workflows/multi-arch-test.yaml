@@ -40,6 +40,8 @@ jobs:
         with:
           context: "{{defaultContext}}:images/python-base"
           platforms: linux/amd64,linux/arm64
-          build-args: PYTHON_VERSION=${{ matrix.py_version }},TIMESTAMP=${{ steps.timestamp.outputs.value }}
+          build-args: |
+            PYTHON_VERSION=${{ matrix.py_version }}
+            TIMESTAMP=${{ steps.timestamp.outputs.value }}
           push: true
           tags: kevintest:latest
