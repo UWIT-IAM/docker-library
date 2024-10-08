@@ -19,7 +19,7 @@ jobs:
         with:
           credentials: "${{ secrets.MCI_GCLOUD_AUTH_JSON }}"
 
-      - name: Build and push
+      - name: Build and push somewhere
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
