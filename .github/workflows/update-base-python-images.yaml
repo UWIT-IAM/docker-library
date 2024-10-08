@@ -2,6 +2,8 @@ name: "Update base Python container images"
 
 on:
   push:
+    branches:
+      - 'main'
   schedule:
     - cron: '0 0 * * MON'
   workflow_dispatch:
