@@ -47,4 +47,6 @@ jobs:
             PYTHON_VERSION=${{ matrix.py_version }}
             TIMESTAMP=${{ steps.timestamp.outputs.value }}
           push: true
-          tags: ${{ env.image_uri }}kevintest:latest
+          tags: |
+            ${{ env.image_uri }}kevintest:latest
+            ${{ env.image_uri }}kevintest:${{ steps.timestamp.outputs.value }}
