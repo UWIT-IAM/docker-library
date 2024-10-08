@@ -19,6 +19,12 @@ jobs:
         with:
           credentials: "${{ secrets.MCI_GCLOUD_AUTH_JSON }}"
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and push somewhere
         uses: docker/build-push-action@v6
         with:
