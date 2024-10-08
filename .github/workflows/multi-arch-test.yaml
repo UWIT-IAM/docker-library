@@ -37,6 +37,8 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push somewhere
+        env:
+          image_uri: "us-docker.pkg.dev/uwit-mci-iam/containers/base-python-${{ matrix.py_version }}"
         uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:images/python-base"
@@ -45,4 +47,4 @@ jobs:
             PYTHON_VERSION=${{ matrix.py_version }}
             TIMESTAMP=${{ steps.timestamp.outputs.value }}
           push: true
-          tags: kevintest:latest
+          tags: ${{ env.image_uri }}kevintest:latest
