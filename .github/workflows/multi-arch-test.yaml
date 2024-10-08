@@ -24,6 +24,11 @@ jobs:
         with:
           credentials: "${{ secrets.MCI_GCLOUD_AUTH_JSON }}"
 
+      - name: Record timestamp for image
+        id: timestamp
+        run: |
+          echo "value=$(date +%Y.%m.%d.%H.%M.%S)" >> $GITHUB_OUTPUT  # e.g., 2024.01.17.15.09.31
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -35,6 +40,6 @@ jobs:
         with:
           context: "{{defaultContext}}:images/python-base"
           platforms: linux/amd64,linux/arm64
-          build-args: PYTHON_VERSION=${{ matrix.py_version }}
+          build-args: PYTHON_VERSION=${{ matrix.py_version }},TIMESTAMP=${{ steps.timestamp.outputs.value }}
           push: true
           tags: kevintest:latest
