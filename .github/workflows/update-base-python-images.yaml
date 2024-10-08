@@ -1,9 +1,6 @@
 name: "Update base Python container images"
 
 on:
-  push:
-    branches:
-      - 'main'
   schedule:
     - cron: '0 0 * * MON'
   workflow_dispatch:
@@ -32,21 +29,30 @@ jobs:
         uses: 'uwit-iam/action-auth-artifact-registry@main'
         with:
           credentials: "${{ secrets.MCI_GCLOUD_AUTH_JSON }}"
+          enable_private_docker: true
 
       - name: Record timestamp for image
         id: timestamp
         run: |
           echo "value=$(date +%Y.%m.%d.%H.%M.%S)" >> $GITHUB_OUTPUT  # e.g., 2024.01.17.15.09.31
 
-      - name: Build and push docker image
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push to GAR
         env:
           image_uri: "us-docker.pkg.dev/uwit-mci-iam/containers/base-python-${{ matrix.py_version }}"
-        run: |
-          docker build \
-            images/python-base/ \
-            -f images/python-base/Dockerfile \
-            -t "${{ env.image_uri }}:latest" \
-            -t "${{ env.image_uri }}:${{ steps.timestamp.outputs.value }}" \
-            --build-arg TIMESTAMP="${{ steps.timestamp.outputs.value }}" \
-            --build-arg PYTHON_VERSION="${{ matrix.py_version }}"
-          docker push --all-tags "${{ env.image_uri }}"
+        uses: docker/build-push-action@v6
+        with:
+          context: "{{defaultContext}}:images/python-base"
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            PYTHON_VERSION=${{ matrix.py_version }}
+            TIMESTAMP=${{ steps.timestamp.outputs.value }}
+          push: true
+          tags: |
+            ${{ env.image_uri }}:latest
+            ${{ env.image_uri }}:${{ steps.timestamp.outputs.value }}
