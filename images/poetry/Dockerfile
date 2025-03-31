@@ -14,7 +14,7 @@
 # TODO: Set up a matrix to release 3.6–3.9 in this fashion, changing only PYTHON_VERSION
 # This will help more people onboard to this image, even if they're not using poetry
 # because they won't be locked to 3.8
-ARG PYTHON_VERSION=3.8
+ARG PYTHON_VERSION=3.9
 FROM python:${PYTHON_VERSION}-slim as poetry-base
 ARG POETRY_HOME=/opt/poetry
 ARG VENV_PATH=/opt/pysetup/.venv
