@@ -41,7 +41,7 @@ jobs:
           poetry update --lock
         id: poetry-update
       - run: |
-          docker build -f images/poetry/Dockerfile -t ${{ env.dest_image }} -t ${{ env.latest_image }} images/poetry
+          docker build --no-cache -f images/poetry/Dockerfile -t ${{ env.dest_image }} -t ${{ env.latest_image }} images/poetry
           docker push ${{ env.dest_image }}
           docker push ${{ env.latest_image }}
           echo ::notice::Pushed ${{ env.dest_image }}
