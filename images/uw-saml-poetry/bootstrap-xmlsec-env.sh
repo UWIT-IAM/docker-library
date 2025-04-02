@@ -5,6 +5,8 @@ set -e
 BUILD_DEPS=(
   libxmlsec1-dev
   build-essential
+  libxmlsec1
+  libxmlsec1-openssl
   pkg-config
 )
 
