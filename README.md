@@ -23,16 +23,14 @@ good idea to set up your own scheduled actions to keep stagnant dependents up to
 
 
 ## Index of Images
+⚠️ The following images have been removed and are no longer maintained:
+- poetry
+- uw-saml-poetry
 
-- [poetry](images/poetry.dockerfile) 
-  - *Description*: A python3.8 image that has poetry installed, allowing you to simply 
-    add your project files into the docker image, and use poetry to install and 
-    build your package inside the container.
-- [uw-saml-poetry](images/uw-saml-poetry.dockerfile)
-  - Installs [uw-saml-python] and its dependencies, which is a heavy lift on its own.
-    This descends from poetry above. Use this image if you need to use the 
-    uw-saml-python library in your application.
-   
+These images were unused and no longer pulled by active projects (including identity.uw).
+They’ve been replaced by a more flexible, matrix-based build process that uses
+python:<version>-slim as the base image and installs Poetry via pipx, following
+current best practices. If you need a Python + Poetry image, use that approach instead.
 
 # Contributing
 
