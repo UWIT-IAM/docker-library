@@ -1,4 +1,4 @@
-name: "Update base Python container images"
+name: "Build and push CentOS 7 to GAR"
 
 on:
   workflow_dispatch:
