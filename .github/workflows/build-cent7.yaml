@@ -1,0 +1,42 @@
+name: "Update base Python container images"
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Auth to Cloud
+        uses: 'uwit-iam/action-auth-artifact-registry@main'
+        with:
+          credentials: "${{ secrets.MCI_GCLOUD_AUTH_JSON }}"
+          enable_private_docker: true
+
+      - name: Record timestamp for image
+        id: timestamp
+        run: |
+          echo "value=$(date +%Y.%m.%d.%H.%M.%S)" >> $GITHUB_OUTPUT  # e.g., 2024.01.17.15.09.31
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Build and push to GAR
+        env:
+          image_uri: "us-docker.pkg.dev/uwit-mci-iam/containers/base-cent-7"
+        uses: docker/build-push-action@v6
+        with:
+          context: "{{defaultContext}}:images/centos7"
+          push: true
+          tags: |
+            ${{ env.image_uri }}:latest
+            ${{ env.image_uri }}:${{ steps.timestamp.outputs.value }}
