@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# from version:
+#   mariadbd  Ver 12.3.2-MariaDB for Linux on x86_64 (MariaDB Server)
+
+podman build --platform linux/amd64,linux/arm64 \
+  . -f "./Dockerfile" \
+  --manifest "us-docker.pkg.dev/uwit-mci-iam/containers/mariadb:12.3.2"
+
+
+# podman build --platform linux/amd64,linux/arm64 --build-context "dockerfiles=./uw" --build-arg CERTIFICAT_VERSION=2026.8.2 -f "./Dockerfile" . --manifest "uwacme:2026.8.2"
+
+
+# us-docker.pkg.dev/uwit-mci-iam/containers/uwacme-2026.8.2:2026.08.10.20.01.47
+

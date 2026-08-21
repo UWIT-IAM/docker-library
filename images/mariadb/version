@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+podman run -it --rm cgr.dev/chainguard/mariadb:latest --version
+
