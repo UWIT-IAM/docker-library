@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-podman run -it --rm cgr.dev/chainguard/mariadb:latest --version
+podman run -it --rm cgr.dev/uw.edu/mariadb:12 --version
 
